@@ -6,7 +6,9 @@ export async function extractTextFromDocument(env, file) {
   const formData = new FormData();
 
   formData.append("apikey", env.OCR_SPACE_API_KEY);
-  formData.append("language", "eng");
+formData.append("language", "eng");
+formData.append("scale", "true");
+formData.append("OCREngine", "2");
   formData.append("isOverlayRequired", "false");
   const buffer = await file.arrayBuffer();
 
@@ -49,7 +51,16 @@ formData.append("file", blob, file.name);
     throw new Error("No text found in document.");
   }
 
-  return data.ParsedResults
-    .map(result => result.ParsedText)
-    .join("\n");
+ const text = data.ParsedResults
+  .map(result => result.ParsedText)
+  .join("\n")
+  .replace(/\r/g, "")
+  .replace(/\t/g, " ")
+  .replace(/\n{2,}/g, "\n")
+  .trim();
+
+console.log("Clean OCR Text:");
+console.log(text);
+
+return text;
 }

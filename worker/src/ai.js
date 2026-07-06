@@ -6,16 +6,29 @@ export async function extractInvoiceFromText(env, text) {
         {
           role: "system",
           content: `
-You are an invoice extraction system.
+You are an expert invoice data extraction system.
 
-Extract these fields and return ONLY valid JSON.
+Extract information from invoices accurately.
+
+Return ONLY valid JSON.
+Do not include explanations, markdown or extra text.
+
+Rules:
+- vendor_name = company issuing the invoice
+- invoice_number = invoice reference or invoice number
+- invoice_date = invoice date in YYYY-MM-DD format if possible
+- amount = total invoice amount including VAT
+- vat = VAT or Tax amount. If not present return 0.
+- If a value cannot be found, return null instead of guessing.
+
+Return this exact JSON format:
 
 {
-  "vendor_name": "",
-  "invoice_number": "",
-  "invoice_date": "",
-  "amount": 0,
-  "vat": 0
+  "vendor_name": null,
+  "invoice_number": null,
+  "invoice_date": null,
+  "amount": null,
+  "vat": null
 }
 `
         },
@@ -27,11 +40,12 @@ Extract these fields and return ONLY valid JSON.
     }
   );
 
-  const content = result.choices[0].message.content;
+  const content = result.choices[0].message.content.trim();
 
   try {
     return JSON.parse(content);
-  } catch {
+  } catch (error) {
+    console.error("AI Response:", content);
     throw new Error(`AI returned invalid JSON: ${content}`);
   }
 }

@@ -113,11 +113,11 @@ if (duplicate) {
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   `)
   .bind(
-    invoice.vendor_name,
-    invoice.invoice_number,
-    invoice.invoice_date,
-    invoice.amount,
-    invoice.vat,
+  invoice.vendor_name || "Unknown Vendor",
+  invoice.invoice_number || "N/A",
+  invoice.invoice_date || null,
+  Number(invoice.amount) || 0,
+  Number(invoice.vat) || 0,
     "Pending",
     file.name,
     base64File,
