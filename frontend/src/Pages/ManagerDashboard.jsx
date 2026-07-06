@@ -69,34 +69,73 @@ export default function ManagerDashboard() {
           marginTop: "20px",
         }}
       >
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Vendor</th>
-            <th>Invoice</th>
-            <th>Amount</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
+       <thead>
+  <tr>
+    <th>ID</th>
+    <th>Vendor</th>
+    <th>Invoice No.</th>
+    <th>Invoice Date</th>
+    <th>VAT</th>
+    <th>Total Amount</th>
+    <th>Status</th>
+    <th>Action</th>
+  </tr>
+</thead>
 
         <tbody>
-          {documents.map((doc) => (
-            <tr key={doc.id}>
-              <td>{doc.id}</td>
-              <td>{doc.vendor_name}</td>
-              <td>{doc.invoice_number}</td>
-              <td>R {doc.amount}</td>
-              <td>{doc.status}</td>
+  {documents.length === 0 ? (
+    <tr>
+      <td colSpan="8" style={{ textAlign: "center" }}>
+        No pending invoices.
+      </td>
+    </tr>
+  ) : (
+    documents.map((doc) => (
+      <tr key={doc.id}>
+        <td>{doc.id}</td>
 
-              <td>
-                <button onClick={() => approveInvoice(doc.id)}>
-  Approve
-</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
+        <td>{doc.vendor_name || "Not Found"}</td>
+
+        <td>{doc.invoice_number || "Not Found"}</td>
+
+        <td>
+          {doc.invoice_date
+            ? new Date(doc.invoice_date).toLocaleDateString()
+            : "Not Found"}
+        </td>
+
+        <td>
+          R {Number(doc.vat || 0).toLocaleString()}
+        </td>
+
+        <td>
+          <strong>
+            R {Number(doc.amount || 0).toLocaleString()}
+          </strong>
+        </td>
+
+        <td>{doc.status}</td>
+
+        <td>
+          <button
+            onClick={() => approveInvoice(doc.id)}
+            style={{
+              background: "#16a34a",
+              color: "#fff",
+              border: "none",
+              padding: "8px 14px",
+              borderRadius: "6px",
+              cursor: "pointer",
+              fontWeight: "600",
+            }}
+          >
+            ✅ Approve
+          </button>
+        </td>
+      </tr>
+    ))
+  )}
+</tbody>
       </table>
     </Layout>
   );

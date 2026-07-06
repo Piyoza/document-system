@@ -186,101 +186,117 @@ export default function FinanceDashboard() {
             <thead>
 
               <tr>
-                <th>ID</th>
-                <th>Vendor</th>
-                <th>Invoice</th>
-                <th>Amount</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
+  <th>ID</th>
+  <th>Vendor</th>
+  <th>Invoice No.</th>
+  <th>Invoice Date</th>
+  <th>VAT</th>
+  <th>Total</th>
+  <th>Status</th>
+  <th>Action</th>
+</tr>
 
             </thead>
 
             <tbody>
                               {loading ? (
                 <tr>
-                  <td colSpan="6" className="no-data">
+                  <td colSpan="8" className="no-data">
                     Loading invoices...
                   </td>
                 </tr>
               ) : filteredDocuments.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="no-data">
+                  <td colSpan="8" className="no-data">
                     No invoices found.
                   </td>
                 </tr>
               ) : (
                 filteredDocuments.map((doc) => (
-                  <tr key={doc.id}>
-                    <td>{doc.id}</td>
+                 <tr key={doc.id}>
+  <td>{doc.id}</td>
 
-                    <td>{doc.vendor_name}</td>
+  <td>{doc.vendor_name || "Not Found"}</td>
 
-                    <td>{doc.invoice_number}</td>
+  <td>{doc.invoice_number || "Not Found"}</td>
 
-                    <td>
-                      <strong>
-                        R {Number(doc.amount || 0).toLocaleString()}
-                      </strong>
-                    </td>
+  <td>
+    {doc.invoice_date
+      ? new Date(doc.invoice_date).toLocaleDateString()
+      : "Not Found"}
+  </td>
 
-                    <td>
-                      <span
-                        className={`status ${
-                          doc.status === "Approved"
-                            ? "approved"
-                            : doc.status === "Rejected"
-                            ? "rejected"
-                            : "manager-approved"
-                        }`}
-                      >
-                        {doc.status}
-                      </span>
-                    </td>
+  <td>
+    R {Number(doc.vat || 0).toLocaleString()}
+  </td>
 
-                    <td>
-                      <div className="actions">
-                        <button
-                          className="btn-view"
-                          onClick={() =>
-                            alert(
-                              `Vendor: ${doc.vendor_name}
+  <td>
+    <strong>
+      R {Number(doc.amount || 0).toLocaleString()}
+    </strong>
+  </td>
+
+  <td>
+    <span
+      className={`status ${
+        doc.status === "Approved"
+          ? "approved"
+          : doc.status === "Rejected"
+          ? "rejected"
+          : "manager-approved"
+      }`}
+    >
+      {doc.status}
+    </span>
+  </td>
+
+  <td>
+    <div className="actions">
+      <button
+        className="btn-view"
+        onClick={() =>
+          alert(`
+Vendor: ${doc.vendor_name}
 
 Invoice: ${doc.invoice_number}
 
-Amount: R ${doc.amount}
+Invoice Date: ${
+            doc.invoice_date
+              ? new Date(doc.invoice_date).toLocaleDateString()
+              : "Not Found"
+          }
 
-Status: ${doc.status}`
-                            )
-                          }
-                        >
-                          👁 View
-                        </button>
+VAT: R ${Number(doc.vat || 0).toLocaleString()}
 
-                        {doc.status === "Manager Approved" && (
-                          <>
-                            <button
-                              className="btn-approve"
-                              onClick={() =>
-                                finalApprove(doc.id)
-                              }
-                            >
-                              ✅ Approve
-                            </button>
+Amount: R ${Number(doc.amount || 0).toLocaleString()}
 
-                            <button
-                              className="btn-reject"
-                              onClick={() =>
-                                rejectInvoice(doc.id)
-                              }
-                            >
-                              ❌ Reject
-                            </button>
-                          </>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
+Status: ${doc.status}
+`)
+        }
+      >
+        👁 View
+      </button>
+
+      {doc.status === "Manager Approved" && (
+        <>
+          <button
+            className="btn-approve"
+            onClick={() => finalApprove(doc.id)}
+          >
+            ✅ Approve
+          </button>
+
+          <button
+            className="btn-reject"
+            onClick={() => rejectInvoice(doc.id)}
+          >
+            ❌ Reject
+          </button>
+        </>
+      )}
+    </div>
+  </td>
+</tr>
                 ))
               )}
             </tbody>
