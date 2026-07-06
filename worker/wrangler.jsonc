@@ -1,0 +1,29 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "worker",
+  "main": "src/index.js",
+  "compatibility_date": "2026-06-25",
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "document-db",
+      "database_id": "062c5ec0-bcd9-46e9-b017-870a463536f5"
+    }
+  ],
+
+  "ai": {
+    "binding": "AI"
+  },
+
+  "observability": {
+    "enabled": true
+  },
+
+  "upload_source_maps": true,
+
+  "compatibility_flags": [
+    "nodejs_compat"
+  ]
+  
+}
