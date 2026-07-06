@@ -1,15 +1,15 @@
 import { Routes, Route } from "react-router-dom";
 
-import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
-import Upload from "./pages/Upload";
-import Documents from "./pages/Documents";
-import Admin from "./pages/Admin";
-import ManagerDashboard from "./pages/ManagerDashboard";
-import FinanceDashboard from "./pages/FinanceDashboard";
-import Register from "./pages/Register";
-import AdminUsers from "./pages/AdminUsers";
-import ExportReport from "./pages/ExportReport";
+import Login from "./Pages/Login";
+import Dashboard from "./Pages/Dashboard";
+import Upload from "./Pages/Upload";
+import Documents from "./Pages/Documents";
+import Admin from "./Pages/Admin";
+import Register from "./Pages/Register";
+import ManagerDashboard from "./Pages/ManagerDashboard";
+import FinanceDashboard from "./Pages/FinanceDashboard";
+import ExportReport from "./Pages/ExportReport";
+import AdminUsers from "./Pages/AdminUsers";
 
 
 function App() {
